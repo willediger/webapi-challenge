@@ -41,9 +41,9 @@ router.get("/", async (req, res) => {
   }
 });
 
-// router.get("/:id", validateUserId, (req, res) => {
-//   res.status(200).json(req.user);
-// });
+router.get("/:id", validateProjectId, (req, res) => {
+  res.status(200).json(req.project);
+});
 
 // router.get("/:id/posts", validateUserId, async (req, res) => {
 //   const posts = await db.getUserPosts(req.params.id);
@@ -81,27 +81,26 @@ router.get("/", async (req, res) => {
 //   }
 // });
 
-// //custom middleware
-// async function validateUserId(req, res, next) {
-//   try {
-//     const { id } = req.params;
-//     const user = await db.getById(id);
-//     if (user) {
-//       req.user = user;
-//       next();
-//     } else {
-//       next({
-//         status: 404,
-//         message: "The user with the specified ID does not exist."
-//       });
-//     }
-//   } catch {
-//     next({
-//       status: 500,
-//       message: "The user information could not be retrieved."
-//     });
-//   }
-// }
+async function validateProjectId(req, res, next) {
+  try {
+    const { id } = req.params;
+    const project = await db.get(id);
+    if (project) {
+      req.project = project;
+      next();
+    } else {
+      next({
+        status: 404,
+        message: "The project with the specified ID does not exist."
+      });
+    }
+  } catch {
+    next({
+      status: 500,
+      message: "The project information could not be retrieved."
+    });
+  }
+}
 
 function validateProject(req, res, next) {
   if (req.body && Object.keys(req.body).length > 0) {
@@ -153,5 +152,3 @@ function validateProject(req, res, next) {
 // }
 
 module.exports = router;
-
-//mvp complete
