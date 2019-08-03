@@ -9,7 +9,7 @@ server.use(express.json());
 server.use(logger);
 
 server.use("/api/projects", projectRouter);
-// server.use("/api/actions", actionRouter);
+server.use("/api/actions", actionRouter);
 
 const greeting = process.env.GREETING;
 
