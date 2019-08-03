@@ -25,14 +25,20 @@ In this challenge, create a web API around the following resources: `Projects` a
 Demonstrate your understanding of this Sprint's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your project manager.
 
 - [ ] Mention two parts of Express that you learned about this week.
+Middleware - code that can be executed in the middle of route code that lets you separate frequent activities into functions so you don't have to repeat code.
+routers - ways to organize parts of your server so that you can keep code for each section separate
 
 - [ ] Describe Middleware?
+code that can be executed in the middle of route code that lets you separate frequent activities into functions so you don't have to repeat code.
 
 - [ ] Describe a Resource?
+a resource is an entity of data. with respect to RESTful API's, everything is a resource, each resource is accessible via a unique URL, resources can have multiple representations, and management of resources is done via HTTP methods.
 
 - [ ] What can the API return to help clients know if a request was successful?
+status code of 200 is traditionally denotes success.
 
 - [ ] How can we partition our application into sub-applications?
+separate code into separate routers, and import them & use them where appropriate.
 
 ## Project Setup
 
