@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 const db = require("../data/helpers/projectModel.js");
-// const actionDb = require("../data/helpers/actionModel.js");
+const actionDb = require("../data/helpers/actionModel.js");
 
 router.post("/", validateProject, async (req, res) => {
   const project = await db.insert(req.body);
@@ -16,18 +16,23 @@ router.post("/", validateProject, async (req, res) => {
   }
 });
 
-// router.post("/:id/actions", validateUserId, validatePost, async (req, res) => {
-//   const actionToAdd = { project_id: req.params.id, text: req.body.text };
-//   const action = await actionDb.insert(actionToAdd);
-//   if (action) {
-//     res.status(200).json(action);
-//   } else {
-//     next({
-//       status: 500,
-//       message: "The action could not be added."
-//     });
-//   }
-// });
+router.post(
+  "/:id/actions",
+  validateProjectId,
+  validateAction,
+  async (req, res) => {
+    const actionToAdd = { project_id: req.params.id, ...req.body };
+    const action = await actionDb.insert(actionToAdd);
+    if (action) {
+      res.status(200).json(action);
+    } else {
+      next({
+        status: 500,
+        message: "The action could not be added."
+      });
+    }
+  }
+);
 
 router.get("/", async (req, res) => {
   try {
@@ -133,22 +138,34 @@ function validateProject(req, res, next) {
   }
 }
 
-// function validatePost(req, res, next) {
-//   if (req.body && Object.keys(req.body).length > 0) {
-//     if (req.body.text) {
-//       next();
-//     } else {
-//       next({
-//         status: 400,
-//         message: "missing required text field"
-//       });
-//     }
-//   } else {
-//     next({
-//       status: 400,
-//       message: "missing post data"
-//     });
-//   }
-// }
-
+function validateAction(req, res, next) {
+  if (req.body && Object.keys(req.body).length > 0) {
+    if (req.body.notes && req.body.description) {
+      next();
+    }
+    if (!req.body.notes && req.body.description) {
+      next({
+        status: 400,
+        message: "missing required notes field"
+      });
+    }
+    if (!req.body.notes && req.body.description) {
+      next({
+        status: 400,
+        message: "missing required description field"
+      });
+    }
+    if (!req.body.notes && !req.body.description) {
+      next({
+        status: 400,
+        message: "missing required notes & description fields"
+      });
+    }
+  } else {
+    next({
+      status: 400,
+      message: "missing project data"
+    });
+  }
+}
 module.exports = router;
