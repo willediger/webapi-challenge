@@ -45,17 +45,17 @@ router.get("/:id", validateProjectId, (req, res) => {
   res.status(200).json(req.project);
 });
 
-// router.get("/:id/posts", validateUserId, async (req, res) => {
-//   const posts = await db.getUserPosts(req.params.id);
-//   if (posts) {
-//     res.status(200).json(posts);
-//   } else {
-//     next({
-//       status: 500,
-//       message: "The user's posts could not be retrieved."
-//     });
-//   }
-// });
+router.get("/:id/actions", validateProjectId, async (req, res) => {
+  const actions = await db.getProjectActions(req.params.id);
+  if (actions) {
+    res.status(200).json(actions);
+  } else {
+    next({
+      status: 500,
+      message: "The project's actions could not be retrieved."
+    });
+  }
+});
 
 // router.delete("/:id", validateUserId, async (req, res) => {
 //   const deletedUser = await db.remove(req.params.id);
