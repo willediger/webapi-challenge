@@ -69,17 +69,17 @@ router.delete("/:id", validateProjectId, async (req, res) => {
   }
 });
 
-// router.put("/:id", validateUserId, validateUser, async (req, res) => {
-//   const updatedUser = await db.update(req.params.id, req.body);
-//   if (updatedUser) {
-//     res.status(200).json(updatedUser);
-//   } else {
-//     next({
-//       status: 500,
-//       message: "The user information could not be updated."
-//     });
-//   }
-// });
+router.put("/:id", validateProjectId, validateProject, async (req, res) => {
+  const updatedProject = await db.update(req.params.id, req.body);
+  if (updatedProject) {
+    res.status(200).json(updatedProject);
+  } else {
+    next({
+      status: 500,
+      message: "The project information could not be updated."
+    });
+  }
+});
 
 async function validateProjectId(req, res, next) {
   try {
